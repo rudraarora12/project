@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groww - Mutual Funds & Disciplined SIP Discovery Platform (Live Auto-Sync AMFI)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="desktop-web-app">
+
+  <!-- ============================================================ -->
+  <!-- 1. FULL DESKTOP WEB TOP NAVIGATION (GROWW WEB REPLICA)       -->
+  <!-- ============================================================ -->
+  <header class="groww-desktop-navbar">
+    <div class="nav-container-wide">
+      
+      <!-- Brand (Search moved to fund feed) -->
+      <div class="nav-left-section">
+        <div class="groww-brand-web" id="brandHomeBtn">
+          <svg width="34" height="34" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="8" fill="#00D09C"/>
+            <path d="M8 19L13.5 13.5L17.5 17.5L22 9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 9H22V15" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="groww-brand-text">Groww</span>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-center-menu">
+        <button class="web-nav-link active" data-tab="tab-explore">
+          <i data-lucide="compass"></i>
+          <span>Explore Funds & SIPs</span>
+        </button>
+        <button class="web-nav-link" data-tab="tab-sips">
+          <i data-lucide="repeat"></i>
+          <span>Active SIPs</span>
+          <span class="nav-counter-pill" id="topNavSipCount">2</span>
+        </button>
+        <button class="web-nav-link" data-tab="tab-dashboard">
+          <i data-lucide="pie-chart"></i>
+          <span>Portfolio Dashboard</span>
+        </button>
+        <button class="web-nav-link" data-tab="tab-profile">
+          <i data-lucide="shield-check"></i>
+          <span>Investor Health</span>
+        </button>
+      </nav>
+
+      <!-- Right Utility Actions -->
+      <div class="nav-right-actions">
+        <!-- Live AMFI Auto-Sync Status Badge -->
+        <div class="amfi-live-pill" id="amfiSyncBadge" title="Automated AMFI polling active">
+          <span class="amfi-pulse-dot" id="amfiPulseDot"></span>
+          <span class="amfi-text" id="amfiStatusText">AMFI Auto-Sync: Active (<span id="syncCountdown">45s</span>)</span>
+          <button class="amfi-refresh-btn" id="refreshAmfiBtn" title="Sync live AMFI data now">
+            <i data-lucide="refresh-cw"></i>
+          </button>
+        </div>
+
+        <!-- Demo Feature: Test Live Price Move -->
+        <button class="btn-demo-tick" id="simulateTickBtn" title="Simulate a real-time market price change for testing">
+          <i data-lucide="activity"></i>
+          <span>Test Price Change</span>
+        </button>
+
+        <div class="wallet-badge" title="Groww Balance">
+          <i data-lucide="wallet"></i>
+          <span>₹45,200</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+
+
+
+  <!-- ============================================================ -->
+  <!-- 2. MAIN WEBSITE CONTENT CONTAINER                            -->
+  <!-- ============================================================ -->
+  <main class="web-main-container">
+
+    <!-- ========================================================== -->
+    <!-- VIEW 1: EXPLORE FUNDS & SIP DISCOVERY (DEFAULT)            -->
+    <!-- ========================================================== -->
+    <section id="tab-explore" class="tab-view active">
+      
+
+
+      <!-- Quick Filter Pills Bar (Desktop Horizontal Strip) -->
+      <div class="web-quick-filters-bar">
+        <div class="quick-filter-label">
+          <i data-lucide="zap"></i>
+          <span>Popular Presets:</span>
+        </div>
+        <div class="quick-pills-row" id="quickPillsList">
+          <button class="web-quick-pill" data-quick="min_sip_100">
+            <span>⚡ ₹100 Min SIP</span>
+          </button>
+          <button class="web-quick-pill" data-quick="min_sip_500">
+            <span>⚡ ₹500 Min SIP</span>
+          </button>
+          <button class="web-quick-pill" data-quick="low_fee">
+            <span>📉 Low Fee (&lt; 0.50%)</span>
+          </button>
+          <button class="web-quick-pill" data-quick="crash_defense">
+            <span>🛡️ High Crash Defense</span>
+          </button>
+          <button class="web-quick-pill" data-quick="sector_healthcare">
+            <span>🏥 Healthcare & Pharma</span>
+          </button>
+          <button class="web-quick-pill" data-quick="sector_banking">
+            <span>🏦 Banking & Financials</span>
+          </button>
+          <button class="web-quick-pill" data-quick="cat_index">
+            <span>📊 Nifty Index Only</span>
+          </button>
+          <button class="web-quick-pill" data-quick="wealth_builder">
+            <span>⏳ Wealth Builder (5Y+)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Filters Row & Search Summary -->
+      <div class="desktop-active-strip-bar">
+        <div class="active-count-indicator">
+          <span class="count-bold" id="fundsCountLabel">Showing 16 Mutual Funds</span>
+          <span class="filter-summary-note" id="activeFilterSummary">All direct plans matching current criteria</span>
+        </div>
+        <div class="active-chips-container" id="activeChipsStrip">
+          <!-- Dynamically populated tags with dismissal 'x' -->
+        </div>
+        <button class="desktop-clear-all-btn" id="clearAllFiltersQuick" style="display: none;">
+          <i data-lucide="rotate-ccw"></i>
+          <span>Clear All Filters</span>
+        </button>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- 2-COLUMN DESKTOP SCREENER (AMAZON / MYNTRA WEB MODEL)     -->
+      <!-- ======================================================== -->
+      <div class="desktop-screener-grid">
+        
+        <!-- ====================================================== -->
+        <!-- LEFT COLUMN: STICKY DESKTOP FILTER SIDEBAR             -->
+        <!-- ====================================================== -->
+        <aside class="desktop-filter-sidebar">
+          
+          <div class="sidebar-header">
+            <div class="sidebar-title">
+              <i data-lucide="sliders-horizontal"></i>
+              <span>Filters & Screener</span>
+            </div>
+            <button class="sidebar-reset-btn" id="sidebarResetBtn">Reset</button>
+          </div>
+
+          <div class="sidebar-scrollable-content">
+            
+            <!-- 1. SORT ORDER -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">1. Sort By</span>
+                <span class="acc-dot" id="dot-sort"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-radio">
+                  <input type="radio" name="sortOption" value="expense_asc" checked>
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>Expense Ratio: Low to High</strong>
+                    <span>Minimize daily fee deductions</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="sortOption" value="return_desc">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>3Y Ann. Return: High to Low</strong>
+                    <span>36-Month trailing returns</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="sortOption" value="consistency_desc">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>Consistency: High to Low</strong>
+                    <span>% rolling 3Y cycles beating index</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="sortOption" value="aum_desc">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>Fund Size (AUM): High to Low</strong>
+                    <span>Total assets under management</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="sortOption" value="pe_asc">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>P/E: Value to Growth</strong>
+                    <span>Bargain price-to-earnings</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2. TIME HORIZON -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">2. Time Horizon (Holding Duration)</span>
+                <span class="acc-dot" id="dot-horizon"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="horizonOption" value="short">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Short-term (&lt; 1 Year)</strong>
+                    <span>Liquid & Arbitrage (Capital preservation)</span>
+                  </div>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="horizonOption" value="medium">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Medium-term (1 - 3 Years)</strong>
+                    <span>Balanced Advantage / Hybrid cushion</span>
+                  </div>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="horizonOption" value="long">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Long-term (3 - 5 Years)</strong>
+                    <span>Large Cap & Flexi Cap compounders</span>
+                  </div>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="horizonOption" value="wealth">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Wealth Builder (5+ Years)</strong>
+                    <span>High growth Mid & Small Caps</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 3. CATEGORY & STYLE -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">3. Category & Style</span>
+                <span class="acc-dot" id="dot-category"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Large Cap">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Large Cap (Top 100 Stalwarts)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Flexi Cap">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Flexi Cap (Go-anywhere mandate)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Mid Cap">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Mid Cap (Emerging Market Leaders)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Small Cap">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Small Cap (High Growth / Volatile)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Index / ETF">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Index / ETF (Zero Fund Manager Risk)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="catOption" value="Hybrid / Balanced">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Hybrid / Balanced (Equity + Debt Mix)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4. SECTOR & THEME -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">4. Sector & Theme</span>
+                <span class="acc-dot" id="dot-sector"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="Broad / Diversified">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Broad / Diversified (All Sectors)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="Healthcare & Pharma">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Healthcare & Pharma</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="Banking & Financial Services">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Banking & Financial Services</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="Technology / IT">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Technology / IT</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="FMCG & Consumer">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">FMCG & Consumer Goods</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="sectorOption" value="Auto & Infra">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Auto & Infrastructure</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 5. ANNUAL FEE / EXPENSE RATIO -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">5. Expense Ratio (TER Fee)</span>
+                <span class="acc-dot" id="dot-ter"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-radio">
+                  <input type="radio" name="terOption" value="ultra_low">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Ultra-low (&lt; 0.30%)</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="terOption" value="low">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Low (&lt; 0.50%)</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="terOption" value="moderate">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Under 0.80%</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="terOption" value="any" checked>
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Any Fee Structure</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 6. VALUATION (P/E RATIO) -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">6. Valuation (P/E Ratio)</span>
+                <span class="acc-dot" id="dot-valuation"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-radio">
+                  <input type="radio" name="peOption" value="value">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>Value Bias (P/E &lt; 20)</strong>
+                    <span>Deep margin of safety</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="peOption" value="balanced">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>Balanced (P/E 20 - 32)</strong>
+                    <span>Earnings quality and growth</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="peOption" value="growth">
+                  <span class="custom-radio"></span>
+                  <div class="control-text">
+                    <strong>High Growth (P/E &gt; 32)</strong>
+                    <span>Premium valuation sectors</span>
+                  </div>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="peOption" value="any" checked>
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Any Valuation Multiple</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 7. EXIT LOAD & LOCK-IN -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">7. Exit Load & Liquidity</span>
+                <span class="acc-dot" id="dot-exit"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="exitOption" value="zero_exit">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Zero Exit Penalty (Nil Load)</span>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="exitOption" value="quick_exit">
+                  <span class="custom-checkbox"></span>
+                  <span class="checkbox-lbl">Free after 30 to 90 Days</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 8. STARTING AMOUNT (MIN SIP) -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">8. Min. SIP Budget</span>
+                <span class="acc-dot" id="dot-budget"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-radio">
+                  <input type="radio" name="budgetOption" value="100">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">₹100 SIP (Micro Starter)</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="budgetOption" value="500">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">₹500 SIP (Most Popular)</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="budgetOption" value="1000">
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">₹1,000 SIP</span>
+                </label>
+                <label class="desktop-control-radio">
+                  <input type="radio" name="budgetOption" value="any" checked>
+                  <span class="custom-radio"></span>
+                  <span class="checkbox-lbl">Any Budget Amount</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 9. RISK & DOWNSIDE CRASH DEFENSE -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">9. Downside Crash Defense</span>
+                <span class="acc-dot" id="dot-risk"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="riskOption" value="crash_defense">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>High Crash Defense</strong>
+                    <span>Downside capture &lt; 85% / Sortino &gt; 1.8</span>
+                  </div>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="riskOption" value="low_volatility">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Low Volatility (Beta &lt; 0.90)</strong>
+                    <span>Fluctuates less than Nifty 50</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 10. RETURN CONSISTENCY & STYLE -->
+            <div class="filter-accordion open">
+              <div class="accordion-head">
+                <span class="acc-title">10. Consistency & Churn</span>
+                <span class="acc-dot" id="dot-consistency"></span>
+              </div>
+              <div class="accordion-body">
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="consistencyOption" value="consistent_outperformer">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Consistent Outperformer</strong>
+                    <span>Beats benchmark in &gt; 75% of 3Y cycles</span>
+                  </div>
+                </label>
+                <label class="desktop-control-checkbox">
+                  <input type="checkbox" name="consistencyOption" value="patient_compounder">
+                  <span class="custom-checkbox"></span>
+                  <div class="control-text">
+                    <strong>Patient Compounder (Turnover &lt; 30%)</strong>
+                    <span>Buy & hold, low transaction fees</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+          </div> <!-- /sidebar-scrollable-content -->
+
+        </aside> <!-- /desktop-filter-sidebar -->
+
+
+        <!-- ====================================================== -->
+        <!-- RIGHT COLUMN: DESKTOP FUNDS FEED GRID                   -->
+        <!-- ====================================================== -->
+        <main class="desktop-funds-feed">
+          
+          <!-- Header Bar of Fund Feed -->
+          <div class="feed-header-bar">
+            <div class="feed-search-box">
+              <i data-lucide="search" class="feed-search-icon"></i>
+              <input type="text" id="searchInput" placeholder="Search by fund name, AMC (e.g. Parag Parikh, HDFC, UTI), or sector..." autocomplete="off">
+              <kbd class="search-kbd-hint">Esc</kbd>
+              <button id="clearSearchBtn" class="feed-clear-search" style="display: none;" title="Clear search">
+                <i data-lucide="x"></i>
+              </button>
+            </div>
+            <div class="feed-badge-counter">
+              <span id="activeFilterBadgeWeb" class="web-active-badge" style="display: none;">0 Filters Active</span>
+            </div>
+          </div>
+
+          <!-- The List of Funds (Full Desktop Width Cards) -->
+          <div class="desktop-funds-list" id="fundsFeedList">
+            <!-- Dynamically populated via app.js -->
+          </div>
+
+          <!-- Empty State Container -->
+          <div class="web-empty-state-card" id="emptyStateCard" style="display: none;">
+            <div class="empty-icon-wrap">
+              <i data-lucide="filter-x"></i>
+            </div>
+            <h3>No funds match your selected criteria</h3>
+            <p>Try loosening your fee limits, P/E threshold, or category checkboxes to discover matching mutual funds.</p>
+            <button class="btn-web-emerald" id="resetEmptyBtn">Reset All Filters</button>
+          </div>
+
+
+
+        </main> <!-- /desktop-funds-feed -->
+
+      </div> <!-- /desktop-screener-grid -->
+
+    </section>
+
+
+    <!-- ========================================================== -->
+    <!-- VIEW 2: ACTIVE SIPS & RETENTION TRACKER                     -->
+    <!-- ========================================================== -->
+    <section id="tab-sips" class="tab-view" style="display: none;">
+      
+      <div class="view-page-header">
+        <div>
+          <h2>Active SIP Discipline Hub</h2>
+          <p class="page-sub">Track your 12-month compounding streak and upcoming automated salary-synced debits.</p>
+        </div>
+        <button class="btn-web-emerald-secondary" data-switch-to="tab-explore">
+          <i data-lucide="plus"></i>
+          <span>Start Another Disciplined SIP</span>
+        </button>
+      </div>
+
+      <!-- Milestone 12-Month Journey Banner -->
+      <div class="web-milestone-banner">
+        <div class="milestone-top-row">
+          <div class="m-trophy-box">
+            <i data-lucide="trophy"></i>
+          </div>
+          <div class="m-title-area">
+            <h3>12-Month First-Time Investor Survival Milestone</h3>
+            <p>You have successfully maintained active SIPs through the critical 4-month mark. You are in the top 36% of disciplined investors.</p>
+          </div>
+          <div class="streak-badge-big">
+            <i data-lucide="flame"></i>
+            <span>4-Month Active Streak</span>
+          </div>
+        </div>
+
+        <div class="milestone-journey-track">
+          <div class="journey-bar-bg">
+            <div class="journey-fill" style="width: 33.3%;"></div>
+          </div>
+          <div class="journey-checkpoints">
+            <div class="checkpoint-node completed">
+              <div class="c-dot"><i data-lucide="check"></i></div>
+              <span class="c-title">Month 1: Day 0</span>
+              <span class="c-desc">First Auto-Debit</span>
+            </div>
+            <div class="checkpoint-node active">
+              <div class="c-dot">4</div>
+              <span class="c-title">Month 4: Crucial Stage</span>
+              <span class="c-desc">Resisting Early Churn</span>
+            </div>
+            <div class="checkpoint-node">
+              <div class="c-dot">8</div>
+              <span class="c-title">Month 8: Hockey Stick</span>
+              <span class="c-desc">Compounding Acceleration</span>
+            </div>
+            <div class="checkpoint-node">
+              <div class="c-dot">12</div>
+              <span class="c-title">Month 12: Champion</span>
+              <span class="c-desc">Habit Permanence Unlocked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active SIPs Grid -->
+      <div class="active-sips-grid" id="activeSipsContainer">
+        <!-- Dynamically injected active SIP cards -->
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================== -->
+    <!-- VIEW 3: PORTFOLIO DASHBOARD                                 -->
+    <!-- ========================================================== -->
+    <section id="tab-dashboard" class="tab-view" style="display: none;">
+      
+      <div class="view-page-header">
+        <div>
+          <h2>Portfolio Performance & Asset Allocation</h2>
+          <p class="page-sub">Direct Mutual Funds Account (BSE StAR MF • Zero Commission)</p>
+        </div>
+      </div>
+
+      <div class="dashboard-stats-grid">
+        <div class="dash-stat-box">
+          <span class="dash-lbl">Current Portfolio Value</span>
+          <div class="dash-val-row">
+            <h2 id="dashLivePortfolioVal">₹8,450.20</h2>
+            <span class="dash-gain-pill" id="dashLiveGainPill">+₹450.20 (+5.6%) ▲</span>
+          </div>
+          <span class="dash-subnote">Across 2 Active SIP Schemes</span>
+        </div>
+
+        <div class="dash-stat-box">
+          <span class="dash-lbl">Total Invested Principal</span>
+          <div class="dash-val-row">
+            <h2>₹8,000.00</h2>
+          </div>
+          <span class="dash-subnote">Avg Monthly SIP: ₹2,000/mo</span>
+        </div>
+
+        <div class="dash-stat-box">
+          <span class="dash-lbl">Next Scheduled Auto-Debit</span>
+          <div class="dash-val-row">
+            <h2>5th Dec 2026</h2>
+            <span class="dash-synced-pill"><i data-lucide="check"></i> Salary Synced</span>
+          </div>
+          <span class="dash-subnote">HDFC Bank •••• 4021 (UPI AutoPay)</span>
+        </div>
+      </div>
+
+      <!-- Allocation breakdown -->
+      <div class="portfolio-breakdown-row">
+        <div class="breakdown-card">
+          <h3>Asset Allocation Breakdown</h3>
+          <div class="alloc-bars">
+            <div class="alloc-segment">
+              <div class="alloc-header">
+                <span>Flexi Cap Diversified Equity (Parag Parikh)</span>
+                <strong>50.0% (₹4,225)</strong>
+              </div>
+              <div class="bar-container"><div class="bar-fill" style="width: 50%; background: #00D09C;"></div></div>
+            </div>
+            <div class="alloc-segment">
+              <div class="alloc-header">
+                <span>Passive Large Cap Index (UTI Nifty 50)</span>
+                <strong>50.0% (₹4,225)</strong>
+              </div>
+              <div class="bar-container"><div class="bar-fill" style="width: 50%; background: #2563EB;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="breakdown-card">
+          <h3>Investor Health Score</h3>
+          <div class="health-score-content">
+            <div class="score-circle">
+              <span class="score-big">94</span>
+              <span class="score-of">/ 100</span>
+            </div>
+            <div class="health-meta">
+              <h4>Low Vulnerability to Panic Churn</h4>
+              <p>Your portfolio is diversified across 100+ underlying stocks with an average expense ratio of 0.39% and beta of 0.89.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================== -->
+    <!-- VIEW 4: INVESTOR HEALTH & SEBI CHARTER                      -->
+    <!-- ========================================================== -->
+    <section id="tab-profile" class="tab-view" style="display: none;">
+      
+      <div class="view-page-header">
+        <div>
+          <h2>Investor Health & Account Settings</h2>
+          <p class="page-sub">Direct Mutual Funds Account Settings & SEBI Investor Protection</p>
+        </div>
+      </div>
+
+      <div class="profile-desktop-grid">
+        <div class="profile-card-left">
+          <div class="p-avatar-huge">RK</div>
+          <h3>Rudra K.</h3>
+          <p class="p-email">rudra.investor@groww.mock</p>
+          <span class="badge-kyc-verified"><i data-lucide="shield-check"></i> KYC Verified & Active</span>
+          
+          <div class="account-spec-list">
+            <div class="acc-spec-item">
+              <span>Client ID:</span>
+              <strong>GRW-9842109</strong>
+            </div>
+            <div class="acc-spec-item">
+              <span>Depository:</span>
+              <strong>CDSL / BSE StAR MF</strong>
+            </div>
+            <div class="acc-spec-item">
+              <span>Commission:</span>
+              <strong style="color: #00D09C;">0% (Direct Plans Only)</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-settings-right">
+          <div class="settings-box">
+            <h4>Automated Bank Mandate (e-NACH & UPI)</h4>
+            <div class="setting-row">
+              <div class="s-left">
+                <i data-lucide="credit-card"></i>
+                <div>
+                  <strong>HDFC Bank Savings Account •••• 4021</strong>
+                  <span>AutoPay Mandate Limit: ₹25,000/month • Active</span>
+                </div>
+              </div>
+              <span class="status-green">Verified</span>
+            </div>
+          </div>
+
+          <div class="settings-box">
+            <h4>Salary Day Auto-Debit Synchronization</h4>
+            <div class="setting-row">
+              <div class="s-left">
+                <i data-lucide="calendar"></i>
+                <div>
+                  <strong>Protected Debit Window: 5th of every month</strong>
+                  <span>Prevents insufficient balance bounce fees by aligning with salary crediting dates.</span>
+                </div>
+              </div>
+              <span class="status-green">Active</span>
+            </div>
+          </div>
+
+          <div class="settings-box">
+            <h4>SEBI Investor Protection & Charter</h4>
+            <p class="sebi-charter-note">
+              Groww is an AMFI-registered mutual fund distributor (Direct Mode ARN). All mutual fund investments are subject to market risks. Past performance does not guarantee future results.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main> <!-- /web-main-container -->
+
+
+  <!-- ============================================================ -->
+  <!-- MODAL: EVAL-GATED AI REALITY CHECK ENGINE (DESKTOP MODAL)    -->
+  <!-- ============================================================ -->
+  <div class="web-modal-backdrop" id="aiModalBackdrop" style="display: none;">
+    <div class="web-ai-modal-box">
+      
+      <!-- AI Header -->
+      <div class="ai-box-header">
+        <div class="ai-title-group">
+          <div class="ai-sparkle-pill">
+            <i data-lucide="sparkles"></i>
+            <span>Groww Objective Lens™</span>
+          </div>
+          <span class="ai-confidence-badge">
+            <i data-lucide="shield-check"></i> Eval-Gated Verification Score: 98.4%
+          </span>
+        </div>
+        <button class="ai-box-close" id="closeAiModalBtn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- AI Content Body -->
+      <div class="ai-box-body" id="aiModalBody">
+        <!-- Dynamically injected fund reality data -->
+      </div>
+
+      <!-- Safe Fallback / Regulatory Footer -->
+      <div class="ai-box-footer">
+        <div class="ai-disclaimer-note">
+          <i data-lucide="info"></i>
+          <span><strong>SEBI Non-Advisory Guarantee:</strong> This is a factual historical simulator designed to eradicate the Month 3–7 Underwhelming Plateau. Groww does not provide investment advice or stock tips.</span>
+        </div>
+        <div class="ai-footer-actions">
+          <button class="btn-web-emerald" id="aiProceedToSipBtn">
+            <span>Proceed to Start SIP with Realistic Expectations</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- MODAL: INTERACTIVE SIP SETUP & COMMITMENT (DESKTOP MODAL)     -->
+  <!-- ============================================================ -->
+  <div class="web-modal-backdrop" id="sipModalBackdrop" style="display: none;">
+    <div class="web-sip-modal-box">
+      
+      <div class="sip-box-header">
+        <div>
+          <h3>Start Disciplined Monthly SIP</h3>
+          <p id="setupSchemeTitle" class="scheme-subtitle">Parag Parikh Flexi Cap Fund (Direct-Growth)</p>
+        </div>
+        <button class="sip-box-close" id="closeSipModalBtn">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="sip-box-body">
+        
+        <!-- Step 1: Monthly Amount -->
+        <div class="web-form-group">
+          <label class="web-form-label">Monthly Investment Amount</label>
+          <div class="desktop-amt-box">
+            <span class="curr-sign">₹</span>
+            <input type="number" id="sipAmountInput" value="1000" min="100" step="100">
+          </div>
+          <div class="quick-amt-pills">
+            <button class="amt-chip" data-amt="500">₹500</button>
+            <button class="amt-chip active" data-amt="1000">₹1,000</button>
+            <button class="amt-chip" data-amt="2500">₹2,500</button>
+            <button class="amt-chip" data-amt="5000">₹5,000</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Salary Sync Date -->
+        <div class="web-form-group">
+          <div class="lbl-row">
+            <label class="web-form-label">Monthly Debit Date</label>
+            <span class="salary-sync-tag">💡 Smart Sync: 3–5 days post-salary</span>
+          </div>
+          <div class="desktop-dates-grid" id="datePickerRow">
+            <button class="date-chip" data-date="1">1st</button>
+            <button class="date-chip active" data-date="5">5th</button>
+            <button class="date-chip" data-date="10">10th</button>
+            <button class="date-chip" data-date="15">15th</button>
+            <button class="date-chip" data-date="20">20th</button>
+            <button class="date-chip" data-date="28">28th</button>
+          </div>
+          <span class="subtext-note">Automated auto-debit will execute on the 5th. Prevents NSF bounce penalties.</span>
+        </div>
+
+        <!-- Step 3: Payment Mandate -->
+        <div class="web-form-group">
+          <label class="web-form-label">AutoPay Method</label>
+          <div class="mandate-card-desktop">
+            <div class="mandate-left">
+              <span class="upi-tag">UPI</span>
+              <div>
+                <strong>UPI AutoPay (Google Pay / PhonePe / Paytm)</strong>
+                <span>Instant 1-click activation • ₹0 mandate fee</span>
+              </div>
+            </div>
+            <i data-lucide="check-circle-2" class="green-check-icon"></i>
+          </div>
+        </div>
+
+
+
+      </div> <!-- /sip-box-body -->
+
+      <div class="sip-box-footer">
+        <button class="btn-web-emerald" id="confirmSipBtn">
+          <span>Confirm & Activate Monthly SIP</span>
+          <i data-lucide="check"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Toast Notification -->
+  <div class="web-toast-notification" id="toastNotification" style="display: none;">
+    <div class="toast-check-icon">
+      <i data-lucide="check"></i>
+    </div>
+    <div class="toast-body">
+      <strong id="toastTitle">SIP Successfully Activated!</strong>
+      <p id="toastMessage">First installment confirmed. Added to your active 12-month retention hub.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
