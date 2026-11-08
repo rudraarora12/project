@@ -46,6 +46,11 @@
           <i data-lucide="pie-chart"></i>
           <span>Portfolio Dashboard</span>
         </button>
+        <button class="web-nav-link" data-tab="tab-riskmeter">
+          <i data-lucide="gauge"></i>
+          <span>SEBI Risk-o-meter</span>
+          <span class="nav-counter-pill live-pill" style="background: rgba(0, 208, 156, 0.15); color: #00D09C; font-weight: 700;">REAL DATA</span>
+        </button>
         <button class="web-nav-link" data-tab="tab-profile">
           <i data-lucide="shield-check"></i>
           <span>Investor Health</span>
@@ -54,6 +59,18 @@
 
       <!-- Right Utility Actions -->
       <div class="nav-right-actions">
+        <!-- Prominent SEBI Risk Meter Action Button -->
+        <button class="btn-nav-riskmeter" id="navRiskMeterBtn" data-switch-to="tab-riskmeter" title="Open SEBI Mutual Fund Risk-o-meter & Volatility Hub">
+          <div class="nav-rm-icon-wrap">
+            <i data-lucide="gauge"></i>
+          </div>
+          <div class="nav-rm-text">
+            <span class="nav-rm-title">Risk Meter</span>
+            <span class="nav-rm-sub">Real AMFI Data</span>
+          </div>
+          <span class="nav-rm-live-badge">LIVE</span>
+        </button>
+
         <!-- Live AMFI Auto-Sync Status Badge -->
         <div class="amfi-live-pill" id="amfiSyncBadge" title="Automated AMFI polling active">
           <span class="amfi-pulse-dot" id="amfiPulseDot"></span>
@@ -633,6 +650,10 @@
           <h2>Portfolio Performance & Asset Allocation</h2>
           <p class="page-sub">Direct Mutual Funds Account (BSE StAR MF • Zero Commission)</p>
         </div>
+        <button class="btn-web-emerald-secondary" data-switch-to="tab-riskmeter">
+          <i data-lucide="gauge"></i>
+          <span>View Portfolio Risk-o-meter</span>
+        </button>
       </div>
 
       <div class="dashboard-stats-grid">
@@ -773,6 +794,653 @@
               Groww is an AMFI-registered mutual fund distributor (Direct Mode ARN). All mutual fund investments are subject to market risks. Past performance does not guarantee future results.
             </p>
           </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================== -->
+    <!-- VIEW 5: SEBI RISK-O-METER & QUANTITATIVE VOLATILITY HUB     -->
+    <!-- (POWERED BY REAL AMFI DAILY NAVS & STATISTICAL METRICS)    -->
+    <!-- ========================================================== -->
+    <section id="tab-riskmeter" class="tab-view" style="display: none;">
+      
+      <div class="view-page-header riskmeter-page-header">
+        <div class="header-left">
+          <div class="header-badge-row">
+            <span class="badge-sebi-standard">
+              <i data-lucide="shield-alert"></i>
+              SEBI Product Labeling Standard (Risk-o-meter)
+            </span>
+            <span class="badge-live-feed">
+              <span class="amfi-pulse-dot"></span>
+              Live AMFI Feed &amp; Real Historical NAVs
+            </span>
+            <span class="badge-algo-engine">
+              <i data-lucide="cpu"></i>
+              Quantitative Engine: Real 250-Day Return Variance ($\sigma$)
+            </span>
+          </div>
+          <h2>SEBI Mutual Fund Risk-o-meter &amp; Quantitative Intelligence</h2>
+          <p class="page-sub">Official 6-tier SEBI Riskometer ratings calculated from real daily AMFI NAVs, annualized volatility ($\sigma$), market sensitivity ($\beta$), Sharpe &amp; Sortino ratios, and stress simulation.</p>
+        </div>
+      </div>
+
+      <!-- Fund Selector & AMFI Scheme Search Strip -->
+      <div class="riskmeter-selector-bar">
+        <div class="selector-left">
+          <label for="riskFundSelect" class="selector-lbl">
+            <i data-lucide="layers"></i>
+            <span>Select Indian Mutual Fund:</span>
+          </label>
+          <div class="custom-select-wrap">
+            <select id="riskFundSelect" class="styled-fund-dropdown">
+              <option value="ppfas-flexi">Parag Parikh Flexi Cap Fund (High Risk • AMFI: 122639)</option>
+              <option value="nippon-small">Nippon India Small Cap Fund (Very High Risk • AMFI: 118778)</option>
+              <option value="uti-nifty">UTI Nifty 50 Index Fund (High Risk • AMFI: 120716)</option>
+              <option value="icici-tech">ICICI Prudential Technology Fund (Very High Risk • AMFI: 120594)</option>
+              <option value="hdfc-bank">HDFC Banking &amp; Financial Services (Very High Risk • AMFI: 148986)</option>
+              <option value="tata-digital">Tata Digital India Fund (Very High Risk • AMFI: 135800)</option>
+              <option value="sbi-healthcare">SBI Healthcare Opportunities Fund (Very High Risk • AMFI: 119783)</option>
+              <option value="kotak-emerging">Kotak Emerging Equity Fund (Very High Risk • AMFI: 120166)</option>
+              <option value="icici-bluechip">ICICI Prudential Bluechip Fund (High Risk • AMFI: 120586)</option>
+              <option value="hdfc-balanced">HDFC Balanced Advantage Fund (Mod-High Risk • AMFI: 118968)</option>
+              <option value="sbi-liquid">SBI Liquid Fund (Low Risk • AMFI: 119800)</option>
+              <option value="quant-active">Quant Active Fund (Very High Risk • AMFI: 120828)</option>
+              <option value="dsp-health">DSP Healthcare Fund (Very High Risk • AMFI: 145454)</option>
+              <option value="tata-consumer">Tata Consumer Fund (High Risk • AMFI: 135800)</option>
+              <option value="bandhan-value">Bandhan Sterling Value Fund (Very High Risk • AMFI: 122639)</option>
+              <option value="nippon-auto">Nippon India Nifty Auto ETF (Very High Risk • AMFI: 118778)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="selector-divider">or</div>
+
+        <div class="selector-right">
+          <div class="amfi-search-box">
+            <i data-lucide="search" class="search-ico"></i>
+            <input type="text" id="customAmfiInput" placeholder="Enter any AMFI Scheme Code (e.g. 122639, 118778, 120716, 120594)..." />
+            <button class="btn-fetch-amfi" id="btnFetchCustomAmfi">
+              <i data-lucide="download-cloud"></i>
+              <span>Fetch Real Data</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Preset Pills -->
+      <div class="risk-presets-row">
+        <span class="presets-lbl">Quick Presets:</span>
+        <div class="risk-preset-pills" id="riskPresetPills">
+          <button class="risk-preset-pill active" data-fund-id="ppfas-flexi">PPFAS Flexi Cap (122639)</button>
+          <button class="risk-preset-pill" data-fund-id="nippon-small">Nippon Small Cap (118778)</button>
+          <button class="risk-preset-pill" data-fund-id="uti-nifty">UTI Nifty 50 (120716)</button>
+          <button class="risk-preset-pill" data-fund-id="hdfc-balanced">HDFC Balanced Adv (118968)</button>
+          <button class="risk-preset-pill" data-fund-id="sbi-liquid">SBI Liquid Fund (119800)</button>
+          <button class="risk-preset-pill" data-fund-id="icici-tech">ICICI Tech (120594)</button>
+        </div>
+      </div>
+
+      <!-- Core Riskometer Gauge & Real Fundamentals Row -->
+      <div class="riskmeter-core-grid">
+        
+        <!-- Left: The Visual SEBI Gauge Card -->
+        <div class="riskmeter-gauge-card">
+          <div class="gauge-card-header">
+            <div class="gauge-title-line">
+              <i data-lucide="gauge" class="gauge-icon"></i>
+              <h3>Official SEBI Risk-o-meter</h3>
+            </div>
+            <span class="gauge-updated-pill" id="gaugeUpdatedPill">AMFI Synced</span>
+          </div>
+
+          <!-- The SVG Gauge Graphic -->
+          <div class="gauge-graphic-container">
+            <svg class="sebi-gauge-svg" viewBox="0 0 320 185" width="100%" height="auto">
+              <defs>
+                <filter id="needleGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+                </filter>
+                <linearGradient id="hubGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#334155"/>
+                  <stop offset="100%" stop-color="#0F172A"/>
+                </linearGradient>
+              </defs>
+
+              <!-- 6 Slices of the Semicircle Arc (R_outer = 130, R_inner = 80, Center = 160, 150) -->
+              <!-- Slice 1: Low (180deg to 150deg) -->
+              <path class="gauge-arc-segment" data-level="1" d="M 30 150 A 130 130 0 0 1 47.37 85 M 90.77 110 A 80 80 0 0 0 80 150 Z" fill="#00D09C" />
+              <!-- Slice 2: Low to Moderate (150deg to 120deg) -->
+              <path class="gauge-arc-segment" data-level="2" d="M 47.37 85 A 130 130 0 0 1 95 37.4 M 120 80.7 A 80 80 0 0 0 90.77 110 Z" fill="#84CC16" />
+              <!-- Slice 3: Moderate (120deg to 90deg) -->
+              <path class="gauge-arc-segment" data-level="3" d="M 95 37.4 A 130 130 0 0 1 160 20 M 160 70 A 80 80 0 0 0 120 80.7 Z" fill="#EAB308" />
+              <!-- Slice 4: Moderately High (90deg to 60deg) -->
+              <path class="gauge-arc-segment" data-level="4" d="M 160 20 A 130 130 0 0 1 225 37.4 M 200 80.7 A 80 80 0 0 0 160 70 Z" fill="#F97316" />
+              <!-- Slice 5: High (60deg to 30deg) -->
+              <path class="gauge-arc-segment" data-level="5" d="M 225 37.4 A 130 130 0 0 1 272.63 85 M 229.23 110 A 80 80 0 0 0 200 80.7 Z" fill="#EF4444" />
+              <!-- Slice 6: Very High (30deg to 0deg) -->
+              <path class="gauge-arc-segment" data-level="6" d="M 272.63 85 A 130 130 0 0 1 290 150 M 240 150 A 80 80 0 0 0 229.23 110 Z" fill="#B91C1C" />
+
+              <!-- Outer Border Ring -->
+              <path d="M 30 150 A 130 130 0 0 1 290 150" fill="none" stroke="#E2E8F0" stroke-width="2" />
+              <path d="M 80 150 A 80 80 0 0 1 240 150" fill="none" stroke="#E2E8F0" stroke-width="2" />
+
+              <!-- Zone Labels (Curved / Anchored Around Arc) -->
+              <text x="32" y="166" font-size="9" font-weight="700" fill="#00D09C" text-anchor="middle">LOW</text>
+              <text x="44" y="68" font-size="8.5" font-weight="700" fill="#65A30D" text-anchor="middle">LOW-MOD</text>
+              <text x="115" y="24" font-size="8.5" font-weight="700" fill="#CA8A04" text-anchor="middle">MODERATE</text>
+              <text x="205" y="24" font-size="8.5" font-weight="700" fill="#EA580C" text-anchor="middle">MOD-HIGH</text>
+              <text x="275" y="68" font-size="8.5" font-weight="700" fill="#DC2626" text-anchor="middle">HIGH</text>
+              <text x="286" y="166" font-size="9" font-weight="700" fill="#991B1B" text-anchor="middle">VERY HIGH</text>
+
+              <!-- Needle (Centered at 160, 150) -->
+              <g id="gaugeNeedleGroup" transform="rotate(38 160 150)" style="transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                <polygon points="160,35 155,150 165,150" fill="#0F172A" filter="url(#needleGlow)" />
+                <polygon points="160,35 157,150 160,150" fill="#334155" />
+                <circle cx="160" cy="40" r="3" fill="#DC2626" />
+                <circle cx="160" cy="150" r="14" fill="url(#hubGradient)" />
+                <circle cx="160" cy="150" r="6" fill="#00D09C" />
+              </g>
+            </svg>
+          </div>
+
+          <!-- Risk Level & Score Badge -->
+          <div class="gauge-result-row">
+            <div class="risk-badge-big high" id="riskLevelBadge">
+              <span class="badge-dot"></span>
+              <span id="riskLevelText">HIGH RISK</span>
+            </div>
+            <div class="risk-numeric-score">
+              <span class="score-label">SEBI Score:</span>
+              <strong id="riskScoreVal">4.8</strong>
+              <span class="score-max">/ 6.0</span>
+            </div>
+          </div>
+
+          <!-- Official Statutory Warning Box -->
+          <div class="sebi-statutory-box" id="sebiStatutoryBox">
+            <i data-lucide="alert-triangle" class="warn-icon"></i>
+            <p id="sebiStatutoryText">
+              <strong>Statutory Warning:</strong> Investors understand that their principal will be at <strong>High</strong> risk.
+            </p>
+          </div>
+
+          <!-- Dual Benchmark Riskometer Comparison (SEBI Mandated) -->
+          <div class="benchmark-comparison-card">
+            <div class="bench-hdr">
+              <span>SEBI Benchmark Riskometer Comparison</span>
+              <span class="bench-rule-tag">SEBI Mandate</span>
+            </div>
+            <div class="bench-body">
+              <div class="bench-col">
+                <span class="bench-sub">Scheme Risk:</span>
+                <strong id="schemeRiskText" style="color: #EF4444;">High Risk</strong>
+              </div>
+              <div class="bench-vs"><i data-lucide="git-commit"></i></div>
+              <div class="bench-col">
+                <span class="bench-sub" id="benchmarkNameLabel">Benchmark: NIFTY 500 TRI</span>
+                <strong id="benchmarkRiskText" style="color: #EF4444;">High Risk</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Scheme Real-Time Fundamentals & Risk Narrative -->
+        <div class="riskmeter-fund-card">
+          <div class="rfund-top-row">
+            <div class="rfund-title-block">
+              <div class="rfund-cat-pill">
+                <span id="rfundCategory">Flexi Cap</span> • <span id="rfundAmc">PPFAS AMC</span>
+              </div>
+              <h3 id="rfundName">Parag Parikh Flexi Cap Fund (Direct-Growth)</h3>
+              <div class="rfund-codes">
+                <span>AMFI Scheme Code: <strong id="rfundAmfiCode">122639</strong></span>
+                <span class="bullet">•</span>
+                <span id="rfundSchemeType">Open Ended Growth</span>
+              </div>
+            </div>
+            <div class="rfund-live-nav-box">
+              <span class="nav-label">Live AMFI Closing NAV</span>
+              <div class="nav-price-row">
+                <span class="nav-curr">₹</span>
+                <span class="nav-amount" id="rfundLiveNav">91.40</span>
+              </div>
+              <div class="nav-delta-row" id="rfundDeltaRow">
+                <span class="delta-pill green" id="rfundDeltaPill">+₹0.70 (+0.76%) ▲</span>
+              </div>
+              <span class="nav-date-note" id="rfundNavDate">As of 04-Nov-2026</span>
+            </div>
+          </div>
+
+          <!-- Risk Assessment Interpretation -->
+          <div class="rfund-interpretation-box">
+            <div class="interp-header">
+              <i data-lucide="info"></i>
+              <h4>Risk Profile &amp; Drawdown Behavior Analysis</h4>
+            </div>
+            <p id="rfundRiskDescription" class="interp-text">
+              Parag Parikh Flexi Cap Fund invests predominantly in large and mid-sized blue chips with a selective overseas allocation. It carries an official SEBI rating of <strong>High Risk</strong> due to equity market volatility. However, its conservative cash allocation and deep margin-of-safety value philosophy provide superior downside cushion during severe market corrections.
+            </p>
+            <div class="interp-highlights-grid">
+              <div class="ih-box">
+                <span class="ih-lbl">Recommended Horizon</span>
+                <strong id="rfundHorizon">5+ Years (Wealth Creation)</strong>
+              </div>
+              <div class="ih-box">
+                <span class="ih-lbl">Downside Cushion</span>
+                <strong id="rfundDownsideCushion">High Defense (Captures 74% of drops)</strong>
+              </div>
+              <div class="ih-box">
+                <span class="ih-lbl">Market Beta</span>
+                <strong id="rfundBeta">0.78 (Lower Volatility than Nifty)</strong>
+              </div>
+              <div class="ih-box">
+                <span class="ih-lbl">Historical 3Y CAGR</span>
+                <strong id="rfundCagr" style="color: #059669;">22.4% Annualized</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons Strip -->
+          <div class="rfund-actions-strip">
+            <button class="btn-web-emerald" id="btnRiskStartSip">
+              <i data-lucide="plus-circle"></i>
+              <span>Start Disciplined Monthly SIP</span>
+            </button>
+            <button class="btn-web-ai" id="btnRiskAiCheck">
+              <i data-lucide="sparkles"></i>
+              <span>AI Reality Check</span>
+            </button>
+            <button class="btn-refresh-scheme-data" id="btnRefreshSchemeNav">
+              <i data-lucide="refresh-cw"></i>
+              <span>Re-Sync AMFI Data</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 8-Card Real Quantitative Risk Metrics Grid -->
+      <div class="riskmeter-metrics-section">
+        <div class="section-hdr-row">
+          <div>
+            <h3>Quantitative Risk Intelligence &amp; Volatility Metrics</h3>
+            <p class="section-sub">Computed directly from the real daily AMFI NAV time series over 250 trading days.</p>
+          </div>
+          <span class="metrics-algo-tag">
+            <i data-lucide="check-circle-2"></i>
+            Real AMFI Empirical Sample
+          </span>
+        </div>
+
+        <div class="qmetrics-grid">
+          
+          <!-- Metric 1: Annualized Volatility -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Annualized Volatility ($\sigma$)</span>
+              <span class="qm-badge" id="qmVolBadge">Moderate Vol</span>
+            </div>
+            <div class="qm-val" id="qmVolVal">13.8%</div>
+            <p class="qm-desc">Daily NAV log return standard deviation annualized ($\times \sqrt{250}$). Measures frequency and amplitude of daily price swings.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmVolBar" style="width: 58%; background: #00D09C;"></div></div>
+          </div>
+
+          <!-- Metric 2: Beta Sensitivity -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Beta ($\beta$) vs Nifty 50</span>
+              <span class="qm-badge" id="qmBetaBadge">Defensive</span>
+            </div>
+            <div class="qm-val" id="qmBetaVal">0.78</div>
+            <p class="qm-desc">Sensitivity to benchmark swings. Beta &lt; 1.00 indicates the scheme fluctuates less intensely than the overall stock market.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmBetaBar" style="width: 48%; background: #2563EB;"></div></div>
+          </div>
+
+          <!-- Metric 3: Sharpe Ratio -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Sharpe Ratio (Rf = 6.5%)</span>
+              <span class="qm-badge green" id="qmSharpeBadge">Excellent</span>
+            </div>
+            <div class="qm-val" id="qmSharpeVal">1.28</div>
+            <p class="qm-desc">Excess return earned per unit of total volatility. Values above 1.0 represent superior risk-adjusted wealth generation.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmSharpeBar" style="width: 72%; background: #059669;"></div></div>
+          </div>
+
+          <!-- Metric 4: Sortino Ratio -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Sortino Ratio</span>
+              <span class="qm-badge green" id="qmSortinoBadge">High Cushion</span>
+            </div>
+            <div class="qm-val" id="qmSortinoVal">2.10</div>
+            <p class="qm-desc">Penalizes only harmful downward volatility rather than upside gains. Higher values denote superior downside protection.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmSortinoBar" style="width: 80%; background: #059669;"></div></div>
+          </div>
+
+          <!-- Metric 5: Max Drawdown -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Historical Max Drawdown (MDD)</span>
+              <span class="qm-badge amber" id="qmMaxDdBadge">Cushioned</span>
+            </div>
+            <div class="qm-val" id="qmMaxDdVal" style="color: #DC2626;">-12.4%</div>
+            <p class="qm-desc">Deepest peak-to-trough NAV decline observed in historical market corrections before recovering to fresh all-time highs.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmMaxDdBar" style="width: 42%; background: #EF4444;"></div></div>
+          </div>
+
+          <!-- Metric 6: Daily VaR -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">95% Daily Value at Risk (VaR)</span>
+              <span class="qm-badge" id="qmVarBadge">Statistically Safe</span>
+            </div>
+            <div class="qm-val" id="qmVarVal">-1.42%</div>
+            <p class="qm-desc">In 95 out of 100 trading sessions, the maximum single-day price loss will not exceed this threshold under standard conditions.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmVarBar" style="width: 35%; background: #EAB308;"></div></div>
+          </div>
+
+          <!-- Metric 7: Downside Capture -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">Downside Capture Ratio</span>
+              <span class="qm-badge green" id="qmDownsideBadge">Low Drag</span>
+            </div>
+            <div class="qm-val" id="qmDownsideVal">74%</div>
+            <p class="qm-desc">When the benchmark falls by 100%, this scheme captures only 74% of the drop, protecting capital during bear market drawdowns.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmDownsideBar" style="width: 50%; background: #00D09C;"></div></div>
+          </div>
+
+          <!-- Metric 8: TER & Churn Drag -->
+          <div class="qmetric-card">
+            <div class="qm-top">
+              <span class="qm-lbl">TER &amp; Portfolio Turnover</span>
+              <span class="qm-badge" id="qmTerBadge">Direct Low Cost</span>
+            </div>
+            <div class="qm-val" id="qmTerVal">0.61% <span style="font-size:14px; color:#64748B;">• 18% T/O</span></div>
+            <p class="qm-desc">Annual operational expense ratio deducted from NAV and portfolio turnover rate indicating stability of underlying company holdings.</p>
+            <div class="qm-bar-track"><div class="qm-bar-fill" id="qmTerBar" style="width: 30%; background: #2563EB;"></div></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Historical Real NAV & Drawdown Canvas Interactive Chart -->
+      <div class="riskmeter-chart-card">
+        <div class="chart-card-header">
+          <div class="c-title-group">
+            <i data-lucide="trending-up"></i>
+            <div>
+              <h3>Real AMFI NAV Trajectory &amp; Drawdown Curve</h3>
+              <p class="c-sub">Plotting real historical closing NAV points fetched from AMFI official database.</p>
+            </div>
+          </div>
+          <div class="chart-controls">
+            <div class="chart-period-tabs" id="chartPeriodTabs">
+              <button class="c-tab active" data-period="30">1M</button>
+              <button class="c-tab" data-period="90">3M</button>
+              <button class="c-tab" data-period="180">6M</button>
+              <button class="c-tab" data-period="250">1Y</button>
+              <button class="c-tab" data-period="max">All</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-canvas-wrapper" id="chartCanvasWrapper">
+          <canvas id="riskNavChart" width="1200" height="320"></canvas>
+          <div class="chart-hover-tooltip" id="chartHoverTooltip" style="display: none;">
+            <div class="tip-date" id="tipDate">--</div>
+            <div class="tip-nav">NAV: <strong id="tipNav">--</strong></div>
+            <div class="tip-dd">Drawdown from Peak: <strong id="tipDd">--</strong></div>
+          </div>
+        </div>
+
+        <div class="chart-legend-footer">
+          <div class="leg-item">
+            <span class="leg-color" style="background: #00D09C;"></span>
+            <span>Real AMFI Closing NAV (₹)</span>
+          </div>
+          <div class="leg-item">
+            <span class="leg-color" style="background: #EF4444;"></span>
+            <span>Drawdown from Peak (%)</span>
+          </div>
+          <div class="leg-stats" id="chartSummaryStats">
+            <span>Period High: <strong id="chartStatHigh">₹91.40</strong></span>
+            <span>•</span>
+            <span>Period Low: <strong id="chartStatLow">₹78.20</strong></span>
+            <span>•</span>
+            <span>Period Volatility: <strong id="chartStatVol">13.8%</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stress-Test & Market Crash Simulator -->
+      <div class="stress-test-card">
+        <div class="stress-header">
+          <div class="stress-title-group">
+            <div class="stress-icon-wrap">
+              <i data-lucide="activity"></i>
+            </div>
+            <div>
+              <h3>Historical Market Crash Simulator &amp; Stress Resilience</h3>
+              <p>Simulate how this specific scheme weathers severe Indian equity market shocks based on its real empirical Beta ($\beta$) and downside capture ratio.</p>
+            </div>
+          </div>
+          <div class="stress-preset-buttons" id="stressScenarioButtons">
+            <button class="btn-stress-preset active" data-scenario="covid">2020 COVID Crash (-38.4%)</button>
+            <button class="btn-stress-preset" data-scenario="tech">2022 Inflation Drop (-18.2%)</button>
+            <button class="btn-stress-preset" data-scenario="gfc">2008 Financial Crisis (-52.0%)</button>
+          </div>
+        </div>
+
+        <div class="stress-body-grid">
+          <!-- Left: Simulation sliders & scenario details -->
+          <div class="stress-control-col">
+            <div class="stress-scenario-info" id="stressScenarioDesc">
+              <h4>2020 COVID-19 Flash Crash (Feb–Mar 2020)</h4>
+              <p>The Nifty 50 and S&amp;P BSE Sensex plummeted ~38.4% in 35 trading sessions due to nationwide lockdown fears and foreign institutional outflows.</p>
+            </div>
+
+            <div class="stress-slider-group">
+              <div class="slider-header">
+                <label>Custom Market Drop Shock:</label>
+                <strong id="customShockVal">-38.4%</strong>
+              </div>
+              <input type="range" id="customShockSlider" min="-50" max="-5" step="1" value="-38" class="stress-slider" />
+              <div class="slider-scale">
+                <span>-5% (Minor Dip)</span>
+                <span>-25% (Correction)</span>
+                <span>-50% (Black Swan)</span>
+              </div>
+            </div>
+
+            <div class="stress-invest-amt-row">
+              <label>Hypothetical Portfolio Capital:</label>
+              <div class="stress-amt-input-wrap">
+                <span>₹</span>
+                <input type="number" id="stressCapitalInput" value="100000" step="10000" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Stress outputs & behavioral advice -->
+          <div class="stress-output-col">
+            <div class="stress-kpi-row">
+              <div class="stress-kpi">
+                <span class="kpi-lbl">Estimated Fund Drop</span>
+                <h3 id="simFundDropVal" style="color: #DC2626;">-28.4%</h3>
+                <span class="kpi-sub" id="simVsBenchLabel">vs Benchmark -38.4%</span>
+              </div>
+              <div class="stress-kpi">
+                <span class="kpi-lbl">Simulated Portfolio Low</span>
+                <h3 id="simPortfolioLowVal">₹71,600</h3>
+                <span class="kpi-sub" id="simLossRupees">-₹28,400 Drawdown</span>
+              </div>
+              <div class="stress-kpi">
+                <span class="kpi-lbl">Est. Compounding Recovery</span>
+                <h3 id="simRecoveryVal">~8 to 11 Months</h3>
+                <span class="kpi-sub">Historical Bull Run Time</span>
+              </div>
+            </div>
+
+            <div class="stress-advice-box">
+              <div class="advice-hdr">
+                <i data-lucide="shield-check"></i>
+                <span>Discipline Rule for 12-Month Investors:</span>
+              </div>
+              <p id="stressAdviceText">
+                This fund's beta of 0.78 cushions 26% of the market blow. If you stop or cancel SIP auto-debits during the drawdown, you crystallize unrealized losses and permanently forfeit the discounted NAV accumulation that produces wealth in the rebound.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEBI 6-Tier Mutual Fund Risk Spectrum Matrix -->
+      <div class="sebi-matrix-card">
+        <div class="matrix-header">
+          <div>
+            <h3>SEBI Mutual Fund 6-Tier Risk Landscape</h3>
+            <p>Explore where all 16 Indian mutual funds fall along the official SEBI Riskometer spectrum.</p>
+          </div>
+          <span class="matrix-badge">
+            <i data-lucide="layers"></i>
+            Click Any Fund to Inspect Its Risk-o-meter
+          </span>
+        </div>
+
+        <div class="matrix-tiers-grid" id="matrixTiersGrid">
+          <!-- Populated dynamically: Low, Low-Mod, Moderate, Mod-High, High, Very High -->
+        </div>
+      </div>
+
+      <!-- Interactive Personal Investor Risk Profiler & Fund Suitability Checker -->
+      <div class="investor-profiler-card">
+        <div class="profiler-header">
+          <div class="prof-title-group">
+            <div class="prof-icon-wrap">
+              <i data-lucide="user-check"></i>
+            </div>
+            <div>
+              <h3>SEBI Investor Risk Tolerance &amp; Suitability Profiler</h3>
+              <p>Answer 5 quick behavioral questions to compute your personal risk tolerance score and test whether the currently selected mutual fund is suitable for your psychology.</p>
+            </div>
+          </div>
+          <button class="btn-retake-quiz" id="btnRetakeRiskQuiz">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Answers</span>
+          </button>
+        </div>
+
+        <div class="profiler-body-grid">
+          
+          <!-- Questions List -->
+          <div class="profiler-questions-list">
+            
+            <!-- Q1: Age -->
+            <div class="p-question-block" data-q="1">
+              <span class="q-num">Question 1 of 5</span>
+              <h4>What is your current age bracket?</h4>
+              <div class="q-options-grid">
+                <button class="q-opt-btn" data-pts="20">Under 30 Years (Maximum compounding horizon)</button>
+                <button class="q-opt-btn active" data-pts="15">30 to 45 Years (Peak earning years)</button>
+                <button class="q-opt-btn" data-pts="10">45 to 60 Years (Pre-retirement accumulation)</button>
+                <button class="q-opt-btn" data-pts="5">Above 60 Years (Capital preservation focus)</button>
+              </div>
+            </div>
+
+            <!-- Q2: Horizon -->
+            <div class="p-question-block" data-q="2">
+              <span class="q-num">Question 2 of 5</span>
+              <h4>What is your planned investment horizon for this SIP?</h4>
+              <div class="q-options-grid">
+                <button class="q-opt-btn" data-pts="5">Less than 1 Year (Short term liquidity)</button>
+                <button class="q-opt-btn" data-pts="10">1 to 3 Years (Medium term goals)</button>
+                <button class="q-opt-btn" data-pts="15">3 to 5 Years (Growth horizon)</button>
+                <button class="q-opt-btn active" data-pts="20">5+ Years (Long term wealth compounding)</button>
+              </div>
+            </div>
+
+            <!-- Q3: Emotional Reaction -->
+            <div class="p-question-block" data-q="3">
+              <span class="q-num">Question 3 of 5</span>
+              <h4>If the stock market falls 20% in 2 months, how do you honestly react?</h4>
+              <div class="q-options-grid">
+                <button class="q-opt-btn" data-pts="5">Panic and withdraw remaining capital to prevent further loss</button>
+                <button class="q-opt-btn" data-pts="10">Feel anxious and pause monthly SIP auto-debits</button>
+                <button class="q-opt-btn active" data-pts="15">Ignore short term noise and let monthly SIPs run automatically</button>
+                <button class="q-opt-btn" data-pts="20">View it as a massive discount and invest additional lumpsum</button>
+              </div>
+            </div>
+
+            <!-- Q4: Objective -->
+            <div class="p-question-block" data-q="4">
+              <span class="q-num">Question 4 of 5</span>
+              <h4>What is your primary financial objective?</h4>
+              <div class="q-options-grid">
+                <button class="q-opt-btn" data-pts="5">Capital Protection (Zero risk of principal loss)</button>
+                <button class="q-opt-btn" data-pts="10">Inflation Defense with low volatility</button>
+                <button class="q-opt-btn active" data-pts="15">Balanced Long-Term Wealth Creation</button>
+                <button class="q-opt-btn" data-pts="20">Aggressive Multi-Bagger Wealth Compounding</button>
+              </div>
+            </div>
+
+            <!-- Q5: Financial Buffer -->
+            <div class="p-question-block" data-q="5">
+              <span class="q-num">Question 5 of 5</span>
+              <h4>Do you have a dedicated 6-month liquid emergency fund?</h4>
+              <div class="q-options-grid">
+                <button class="q-opt-btn" data-pts="5">No emergency fund; reliant on investments for emergencies</button>
+                <button class="q-opt-btn" data-pts="10">1 to 3 months emergency buffer saved</button>
+                <button class="q-opt-btn active" data-pts="15">3 to 6 months emergency buffer saved</button>
+                <button class="q-opt-btn" data-pts="20">6+ months dedicated emergency buffer fully funded</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Compatibility & Persona Result Column -->
+          <div class="profiler-result-col">
+            <div class="prof-score-card">
+              <span class="psc-lbl">Your Investor Risk Score</span>
+              <div class="psc-circle">
+                <span class="psc-big" id="userRiskScoreVal">80</span>
+                <span class="psc-max">/ 100</span>
+              </div>
+              <h4 id="userPersonaTitle" class="persona-title">Moderately Aggressive Investor</h4>
+              <p id="userPersonaDesc" class="persona-desc">
+                You have a healthy 5+ year compounding horizon, an adequate emergency buffer, and sufficient emotional fortitude to endure typical market corrections without panic-canceling.
+              </p>
+            </div>
+
+            <!-- Fund Compatibility Assessment -->
+            <div class="fund-compatibility-box" id="fundCompatBox">
+              <div class="fc-hdr">
+                <span class="fc-title">Fund Compatibility Check</span>
+                <span class="fc-badge match-green" id="compatBadge">Optimal Match</span>
+              </div>
+              <p id="compatText" class="fc-text">
+                <strong>Strong Alignment:</strong> Your profile (Moderately Aggressive) is well-matched with <strong>Parag Parikh Flexi Cap Fund</strong> (High Risk). Your 5+ year horizon gives the fund sufficient time to compound past temporary volatility.
+              </p>
+              <div class="fc-meter-bar">
+                <div class="fc-bar-track">
+                  <div class="fc-bar-marker" id="compatMarker" style="left: 80%;"></div>
+                </div>
+                <div class="fc-bar-labels">
+                  <span>Conservative</span>
+                  <span>Moderate</span>
+                  <span>Very Aggressive</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </div>
 
