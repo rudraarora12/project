@@ -7,7 +7,7 @@ Now connected directly to the **Free Official Indian Mutual Fund API (`https://a
 ---
 
 ## 🚀 How to Run & Test
-Open [`index.html`](file:///c:/Users/rudra/Desktop/drishti%20proj/index.html) in any web browser (Google Chrome, Microsoft Edge, Brave, Safari, Firefox).
+Open [`index.html`](index.html) in any web browser (Google Chrome, Microsoft Edge, Brave, Safari, Firefox).
 
 Or serve it locally:
 ```bash
@@ -47,18 +47,9 @@ Then visit `http://localhost:8000` in your browser.
 
 ## 💻 Full Desktop Web Architecture
 
-* **Groww Top Navigation:** Official brand mark, PRO DISCOVERY badge, live AMFI connection indicator, wallet balance (`₹45,200`), notifications, and user profile (`Rudra K. • First-Time Investor`).
+* **Groww Top Navigation:** Official brand mark, PRO DISCOVERY badge, live AMFI connection indicator, wallet balance (`₹45,200`), notifications, and user profile (`Abc • First-Time Investor`).
 * **Amazon / Myntra 2-Column Screener:**
   * **Left Sticky Sidebar (310px):** 10 categorized accordion filter sections with active emerald indicator dots and 1-click reset buttons.
   * **Right Content Feed:** Quick-presets bar, live active filter dismissable tags, 5-column spec grid cards (with Live Daily NAV), feature highlight badges, and collapsible analytical drawers.
 * **Eval-Gated "AI Reality Check" Modal:** Tackles the **"Underwhelming Plateau" (Months 3–8)**, setting realistic expectations to prevent early panic-canceling without giving financial advice.
 * **Interactive SIP Setup & 12-Month Discipline Tracker:** Salary-day synchronized debit date picker (1st–28th), UPI AutoPay selection, 12-month commitment pledge, and active habit streak dashboard.
-* **SEBI Risk-o-meter & Quantitative Intelligence Hub (Live AMFI Data):**
-  * **Official 6-Tier SEBI Riskometer Gauge:** Visual SVG semi-circular gauge with smooth needle animation pointing directly to the fund's calibrated risk tier (Low, Low-Mod, Moderate, Mod-High, High, Very High) with dynamic SEBI risk score (1.0 to 6.0) and statutory risk warnings.
-  * **Dual Benchmark Comparison:** Side-by-side comparison of Scheme Riskometer vs Benchmark Riskometer per SEBI regulatory mandate.
-  * **Real Quantitative Volatility Engine:** Computes empirical Annualized Volatility ($\sigma$), Beta ($\beta$), Sharpe Ratio, Sortino Ratio, Maximum Drawdown (MDD), 95% Daily VaR, Downside Capture Ratio, and TER directly from real historical AMFI daily NAV time series.
-  * **Interactive Historical NAV & Drawdown Canvas Chart:** Retina-scaled Canvas charting real AMFI daily NAV trajectory and drawdown curve with timeframe filters (1M, 3M, 6M, 1Y, All) and interactive hover tooltip.
-  * **Historical Market Crash Simulator:** Simulates fund resilience and capital impact during major Indian market crises (2020 COVID Crash -38.4%, 2022 Tech Correction -18.2%, 2008 GFC -52.0%, or Custom Shock Slider).
-  * **SEBI 6-Tier Mutual Fund Risk Landscape Matrix:** Explores where all 16 Indian mutual funds fall along the official SEBI risk spectrum with 1-click loading.
-  * **Interactive Investor Risk Profiler:** 5-question behavioral risk tolerance questionnaire assessing user psychology, age, horizon, and emergency buffer, featuring a real-time compatibility match meter against the currently selected fund.
-  * **Custom AMFI Scheme Lookup:** Enter ANY official 6-digit Indian AMFI scheme code (e.g. `122639`, `118778`, `120716`, `120594`, `119551`, `125354`) to fetch live NAVs and compute quantitative risk analytics in real time.
